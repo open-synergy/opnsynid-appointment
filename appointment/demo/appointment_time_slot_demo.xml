@@ -1,0 +1,24 @@
+<?xml version="1.0" ?>
+<!-- Copyright 2020 OpenSynergy Indonesia
+     Copyright 2020 PT. Simetri Sinergi Indonesia
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl-3.0) -->
+<openerp>
+<data>
+
+<record id="appointment_time_slot_demo1" model="appointment.time_slot">
+    <field name="name">10.00 - 11.30</field>
+    <field name="code">T001</field>
+    <field name="time_start" eval="10.00" />
+    <field name="time_end" eval="11.50" />
+</record>
+
+<record id="appointment_time_slot_demo2" model="appointment.time_slot">
+    <field name="name">14.00 - 15.30</field>
+    <field name="code">T002</field>
+    <field name="time_start" eval="14.00" />
+    <field name="time_end" eval="15.50" />
+</record>
+
+</data>
+
+</openerp>

@@ -1,0 +1,7 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+appointment_type_employee,appointment.type - user,model_appointment_type,base.group_user,1,1,1,1
+appointment_type_all,appointment.type - all,model_appointment_type,,1,0,0,0
+appointment_time_slot_employee,appointment.time_slot - user,model_appointment_time_slot,base.group_user,1,1,1,1
+appointment_time_slot_all,appointment.time_slot - all,model_appointment_time_slot,,1,0,0,0
+appointment_appointment_employee,appointment.appointment - user,model_appointment_appointment,base.group_user,1,1,1,1
+appointment_appointment_all,appointment.appointment - all,model_appointment_appointment,,1,0,0,0

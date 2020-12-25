@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright 2020 OpenSynergy Indonesia
+     Copyright 2020 PT. Simetri Sinergi Indonesia
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl). -->
+<openerp>
+<data>
+<record id="base_workflow_appointment_appointment" model="base.workflow_policy">
+    <field name="model_id" ref="appointment.model_appointment_appointment" />
+</record>
+<record
+            id="base_workflow_line_appointment_appointment_confirm"
+            model="base.workflow_policy_line"
+        >
+    <field name="workflow_id" ref="appointment.base_workflow_appointment_appointment" />
+    <field
+                name="field_id"
+                search="[('model_id.model','=','appointment.appointment'),('name','=','confirm_ok')]"
+            />
+    <field
+                name="python_code"
+            >result = document.type_id and document.type_id.appointment_confirm_grp_ids.ids or True</field>
+</record>
+<record
+            id="base_workflow_line_appointment_appointment_restart_approval"
+            model="base.workflow_policy_line"
+        >
+    <field name="workflow_id" ref="appointment.base_workflow_appointment_appointment" />
+    <field
+                name="field_id"
+                search="[('model_id.model','=','appointment.appointment'),('name','=','restart_approval_ok')]"
+            />
+    <field
+                name="python_code"
+            >result = document.type_id and document.type_id.appointment_restart_approval_grp_ids.ids or True</field>
+</record>
+<record
+            id="base_workflow_line_appointment_appointment_start"
+            model="base.workflow_policy_line"
+        >
+    <field name="workflow_id" ref="appointment.base_workflow_appointment_appointment" />
+    <field
+                name="field_id"
+                search="[('model_id.model','=','appointment.appointment'),('name','=','open_ok')]"
+            />
+    <field
+                name="python_code"
+            >result = document.type_id and document.type_id.appointment_start_grp_ids.ids or True</field>
+</record>
+<record
+            id="base_workflow_line_appointment_appointment_finish"
+            model="base.workflow_policy_line"
+        >
+    <field name="workflow_id" ref="appointment.base_workflow_appointment_appointment" />
+    <field
+                name="field_id"
+                search="[('model_id.model','=','appointment.appointment'),('name','=','finish_ok')]"
+            />
+    <field
+                name="python_code"
+            >result = document.type_id and document.type_id.appointment_finish_grp_ids.ids or True</field>
+</record>
+<record
+            id="base_workflow_line_appointment_appointment_cancel"
+            model="base.workflow_policy_line"
+        >
+    <field name="workflow_id" ref="appointment.base_workflow_appointment_appointment" />
+    <field
+                name="field_id"
+                search="[('model_id.model','=','appointment.appointment'),('name','=','cancel_ok')]"
+            />
+    <field
+                name="python_code"
+            >result = document.type_id and document.type_id.appointment_cancel_grp_ids.ids or True</field>
+</record>
+<record
+            id="base_workflow_line_appointment_appointment_restart"
+            model="base.workflow_policy_line"
+        >
+    <field name="workflow_id" ref="appointment.base_workflow_appointment_appointment" />
+    <field
+                name="field_id"
+                search="[('model_id.model','=','appointment.appointment'),('name','=','restart_ok')]"
+            />
+    <field
+                name="python_code"
+            >result = document.type_id and document.type_id.appointment_restart_grp_ids.ids or True</field>
+</record>
+</data>
+</openerp>
