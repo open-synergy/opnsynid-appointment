@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright 2020 OpenSynergy Indonesia
+     Copyright 2020 PT. Simetri Sinergi Indonesia
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl). -->
+<openerp>
+<data>
+<record id="appointment_type_view_form" model="ir.ui.view">
+    <field name="name">appointment.type form</field>
+    <field name="model">appointment.type</field>
+    <field name="inherit_id" ref="appointment.appointment_type_view_form" />
+    <field name="arch" type="xml">
+        <data>
+            <xpath expr="//page[@name='appointment']" position="after">
+                <page name="request" string="Appointment Request">
+                    <group name="request_general" colspan="4" col="2">
+                        <field name="request_sequence_id" />
+                        <field name="request_date_offset" />
+                    </group>
+                    <group
+                                name="request_workflow"
+                                string="Workflow"
+                                colspan="4"
+                                col="2"
+                            >
+                        <field
+                                    name="appointment_request_confirm_grp_ids"
+                                    widget="many2many_tags"
+                                />
+                        <field
+                                    name="appointment_request_restart_approval_grp_ids"
+                                    widget="many2many_tags"
+                                />
+                        <field
+                                    name="appointment_request_done_grp_ids"
+                                    widget="many2many_tags"
+                                />
+                        <field
+                                    name="appointment_request_cancel_grp_ids"
+                                    widget="many2many_tags"
+                                />
+                        <field
+                                    name="appointment_request_restart_grp_ids"
+                                    widget="many2many_tags"
+                                />
+                    </group>
+                </page>
+            </xpath>
+        </data>
+    </field>
+</record>
+</data>
+</openerp>
