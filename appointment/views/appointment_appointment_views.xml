@@ -50,6 +50,8 @@
                             domain="[('reviewer_ids','in',uid), ('state', 'not in', ['won', 'cancel', 'lost'])]"
                         />
             </group>
+            <separator/>
+            <filter string="New Mail" name="message_unread" domain="[('message_unread','=',True)]"/>
             <group name="group" string="Group By">
                 <filter
                             name="grp_company"
@@ -111,7 +113,8 @@
     <field name="name">appointment.appointment tree</field>
     <field name="model">appointment.appointment</field>
     <field name="arch" type="xml">
-        <tree>
+        <tree fonts="bold:message_unread==True" colors="red:date and (date&lt;current_date) and (state in ('confirm','approve','open'));blue:state == 'draft';grey:state == 'cancel';">
+            <field name="message_unread" invisible="1"/>
             <field name="display_name" string="# Appointment" />
             <field name="title" />
             <field name="company_id" groups="base.group_multi_company" />
