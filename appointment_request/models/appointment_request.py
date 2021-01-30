@@ -19,6 +19,7 @@ class AppointmentRequest(models.Model):
         "base.workflow_policy_object",
         "base.cancel.reason_common",
         "custom.info.mixin",
+        "ir.needaction_mixin",
     ]
     _state_from = ["draft", "confirm"]
     _state_to = ["open"]
