@@ -264,6 +264,29 @@ class AppointmentRequest(models.Model):
 
     @api.multi
     def action_cancel(self):
+        if self.state == "done":
+            self.ensure_one()
+            list_partner_ids = [
+                self.appointment_id.create_uid.partner_id.id,
+                self.appointment_id.appointee_id.partner_id.id,
+            ]
+            self.appointment_id.write(
+                {
+                    "partner_id": False,
+                    "title": False,
+                    "name": "/",
+                    "message_follower_ids": [(6, 0, list_partner_ids)],
+                    "state": "draft",
+                    "confirm_date": False,
+                    "confirm_user_id": False,
+                    "open_date": False,
+                    "open_user_id": False,
+                    "done_date": False,
+                    "done_user_id": False,
+                    "cancel_date": False,
+                    "cancel_user_id": False,
+                }
+            )
         for record in self:
             record.write(record._prepare_cancel_data())
 
@@ -366,6 +389,7 @@ class AppointmentRequest(models.Model):
                 "type_id": self.type_id.id,
                 "partner_id": self.partner_id.id,
                 "title": self.title,
+                "message_follower_ids": [(6, 0, self.message_follower_ids.ids)],
             }
         )
         self.appointment_id.action_confirm()
