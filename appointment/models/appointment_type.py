@@ -31,7 +31,7 @@ class AppointmentType(models.Model):
     allowed_appointee_ids = fields.Many2many(
         string="Allowed Appointee",
         comodel_name="res.users",
-        relation="rel_appointment_type_2_appointee",
+        relation="rel_user_2_appointment_type",
         column1="type_id",
         column2="user_id",
     )

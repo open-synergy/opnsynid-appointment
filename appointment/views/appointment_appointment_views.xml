@@ -260,20 +260,34 @@
                                     name="partner_id"
                                     domain="['|',('parent_id','!=',False),'&amp;',('parent_id','=',False),('is_company','=',False)]"
                                 />
-                        <field name="type_id" />
-                        <field
-                                    name="allowed_appointee_ids"
-                                    invisible="1"
-                                    widget="many2many_tags"
-                                />
                         <field
                                     name="appointee_id"
-                                    domain="[('id','in',allowed_appointee_ids[0][2])]"
+                                />
+                        <field
+                                    name="allowed_type_ids"
+                                    widget="many2many_tags"
+                                    invisible="1"
+                                />
+                        <field
+                                    name="type_ids"
+                                    widget="many2many_tags"
+                                    domain="[('id','in',allowed_type_ids[0][2])]"
+                                />
+                        <field
+                                    name="type_id"
+                                    domain="[('id','in',type_ids[0][2])]"
                                 />
                     </group>
                     <group name="group_1_2">
                         <field name="date" />
                         <field name="time_slot_id" />
+                        <field
+                                    name="appointment_method"
+                                />
+                        <field
+                                    name="link_method"
+                                    attrs="{'invisible': [('appointment_method', '!=', 'online')]}"
+                                />
                     </group>
                 </group>
                 <notebook colspan="4">
