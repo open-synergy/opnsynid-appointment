@@ -6,4 +6,5 @@ from . import (
     appointment_type,
     appointment,
     tier_definition,
+    res_user,
 )

@@ -18,6 +18,7 @@ class Appointment(models.Model):
         "custom.info.mixin",
         "ir.needaction_mixin",
     ]
+    _order = "date, time_slot_id"
     _state_from = ["draft", "confirm"]
     _state_to = ["approve"]
 
@@ -87,12 +88,6 @@ class Appointment(models.Model):
             ],
         },
     )
-    allowed_appointee_ids = fields.Many2many(
-        string="Allowed Appointee",
-        comodel_name="res.users",
-        related="type_id.allowed_appointee_ids",
-        store=False,
-    )
     appointee_id = fields.Many2one(
         string="Appointee",
         comodel_name="res.users",
@@ -111,6 +106,39 @@ class Appointment(models.Model):
         states={
             "draft": [
                 ("readonly", False),
+            ],
+        },
+    )
+    allowed_type_ids = fields.Many2many(
+        string="Allowed Type User",
+        comodel_name="appointment.type",
+        related="appointee_id.allowed_type_ids",
+        store=False,
+    )
+    type_ids = fields.Many2many(
+        string="Allowed Type",
+        comodel_name="appointment.type",
+        required=False,
+        readonly=True,
+        states={
+            "draft": [
+                ("readonly", False),
+                ("required", False),
+            ],
+            "confirm": [
+                ("required", True),
+            ],
+            "approve": [
+                ("required", True),
+            ],
+            "open": [
+                ("required", True),
+            ],
+            "done": [
+                ("required", True),
+            ],
+            "cancel": [
+                ("required", True),
             ],
         },
     )
@@ -140,6 +168,19 @@ class Appointment(models.Model):
                 ("required", True),
             ],
         },
+    )
+    appointment_method = fields.Selection(
+        string="Method",
+        selection=[
+            ("online", "Online"),
+            ("offline", "Offline"),
+        ],
+        copy=False,
+        default="online",
+        required=True,
+    )
+    link_method = fields.Text(
+        string="Link",
     )
     time_slot_id = fields.Many2one(
         string="Time Slot",
@@ -407,7 +448,7 @@ class Appointment(models.Model):
                 raise UserError(error_msg)
 
     @api.onchange(
-        "type_id",
+        "appointee_id",
     )
-    def onchange_appointee_id(self):
-        self.appointee_id = False
+    def onchange_type_id(self):
+        self.type_ids = False
