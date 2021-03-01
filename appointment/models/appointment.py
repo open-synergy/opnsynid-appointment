@@ -138,7 +138,7 @@ class Appointment(models.Model):
                 ("required", True),
             ],
             "cancel": [
-                ("required", True),
+                ("required", False),
             ],
         },
     )
