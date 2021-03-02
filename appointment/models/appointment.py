@@ -123,22 +123,6 @@ class Appointment(models.Model):
         states={
             "draft": [
                 ("readonly", False),
-                ("required", False),
-            ],
-            "confirm": [
-                ("required", True),
-            ],
-            "approve": [
-                ("required", True),
-            ],
-            "open": [
-                ("required", True),
-            ],
-            "done": [
-                ("required", True),
-            ],
-            "cancel": [
-                ("required", False),
             ],
         },
     )
