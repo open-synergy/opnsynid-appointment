@@ -48,13 +48,18 @@ class AppointmentRequest(models.Model):
         obj_appointment = self.env["appointment.appointment"]
         for document in self:
             result = []
-            if document.type_id and document.date and document.state == "open":
+            # if document.type_id and document.date and document.state == "open":
+            if document.date and document.state == "open":
                 date_min = datetime.strptime(document.date, "%Y-%m-%d")
                 date_min = date_min + relativedelta(days=document.date_offset)
                 criteria = [
                     ("date", ">=", date_min),
                     ("state", "=", "draft"),
                 ]
+                if document.type_id:
+                    criteria.append(
+                        ("type_ids", "in", document.type_id.id),
+                    )
                 if document.appointee_id:
                     criteria.append(
                         ("appointee_id", "=", document.appointee_id.id),
@@ -142,6 +147,12 @@ class AppointmentRequest(models.Model):
                 ("readonly", False),
             ],
         },
+    )
+    allowed_appointee_ids = fields.Many2many(
+        string="Allowed Appointee on Request",
+        comodel_name="res.users",
+        related="type_id.allowed_appointee_ids",
+        store=False,
     )
     allowed_appointment_ids = fields.Many2many(
         string="Allowed Appointments",
@@ -274,6 +285,7 @@ class AppointmentRequest(models.Model):
                 {
                     "partner_id": False,
                     "title": False,
+                    "type_id": False,
                     "name": "/",
                     "message_follower_ids": [(6, 0, list_partner_ids)],
                     "state": "draft",
@@ -316,11 +328,15 @@ class AppointmentRequest(models.Model):
     @api.multi
     def _prepare_done_data(self):
         self.ensure_one()
-        return {
-            "state": "done",
-            "done_date": fields.Datetime.now(),
-            "done_user_id": self.env.user.id,
-        }
+        if self.appointment_id:
+            return {
+                "state": "done",
+                "done_date": fields.Datetime.now(),
+                "done_user_id": self.env.user.id,
+            }
+        else:
+            strWarning = _("You have to select appointment first")
+            raise UserError(strWarning)
 
     @api.multi
     def _prepare_cancel_data(self):
@@ -401,6 +417,12 @@ class AppointmentRequest(models.Model):
         self.date_offset = 0
         if self.type_id:
             self.date_offset = self.type_id.request_date_offset
+
+    @api.onchange(
+        "type_id",
+    )
+    def onchange_appointee_id(self):
+        self.appointee_id = False
 
     @api.constrains(
         "appointment_id",
