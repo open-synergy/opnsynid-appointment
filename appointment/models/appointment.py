@@ -1,4 +1,4 @@
-# Copyright 2020 OpenSynergy Indonesia
+# Copyright 2021 OpenSynergy Indonesia
 # Copyright 2020 PT. Simetri Sinergi Indonesia
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
@@ -83,9 +83,6 @@ class Appointment(models.Model):
             "done": [
                 ("required", True),
             ],
-            "cancel": [
-                ("required", True),
-            ],
         },
     )
     appointee_id = fields.Many2one(
@@ -146,9 +143,6 @@ class Appointment(models.Model):
                 ("required", True),
             ],
             "done": [
-                ("required", True),
-            ],
-            "cancel": [
                 ("required", True),
             ],
         },
@@ -398,26 +392,39 @@ class Appointment(models.Model):
     def _check_type_id(self):
         error_msg = _("Please select type")
         for document in self:
-            if document.state != "draft" and not document.type_id:
+            if (
+                document.state != "draft"
+                and document.state != "cancel"
+                and not document.type_id
+            ):
                 raise UserError(error_msg)
 
     @api.constrains("state")
     def _check_partner_id(self):
         error_msg = _("Please select partner")
         for document in self:
-            if document.state != "draft" and not document.partner_id:
+            if (
+                document.state != "draft"
+                and document.state != "cancel"
+                and not document.partner_id
+            ):
                 raise UserError(error_msg)
 
     @api.constrains("state")
     def _check_title(self):
         error_msg = _("Please input title")
         for document in self:
-            if document.state != "draft" and not document.title:
+            if (
+                document.state != "draft"
+                and document.state != "cancel"
+                and not document.title
+            ):
                 raise UserError(error_msg)
 
     @api.constrains("state")
     def _check_timeslot(self):
         error_msg = _("Time slot already schedulled")
+        obj_appointment = self.env["appointment.appointment"]
         for document in self:
             criteria = [
                 ("date", "=", document.date),
@@ -425,9 +432,7 @@ class Appointment(models.Model):
                 ("time_slot_id", "=", document.time_slot_id.id),
                 ("id", "!=", document.id),
             ]
-            appointment_count = self.env["appointment.appointment"].search_count(
-                criteria
-            )
+            appointment_count = obj_appointment.search_count(criteria)
             if appointment_count > 0:
                 raise UserError(error_msg)
 
