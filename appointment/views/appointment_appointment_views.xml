@@ -13,6 +13,7 @@
             <field name="title" />
             <field name="type_id" />
             <field name="partner_id" />
+            <field name="commercial_partner_id" />
             <field name="appointee_id" />
             <field name="date" />
             <field name="time_slot_id" />
@@ -50,8 +51,12 @@
                             domain="[('reviewer_ids','in',uid), ('state', 'not in', ['won', 'cancel', 'lost'])]"
                         />
             </group>
-            <separator/>
-            <filter string="New Mail" name="message_unread" domain="[('message_unread','=',True)]"/>
+            <separator />
+            <filter
+                        string="New Mail"
+                        name="message_unread"
+                        domain="[('message_unread','=',True)]"
+                    />
             <group name="group" string="Group By">
                 <filter
                             name="grp_company"
@@ -64,6 +69,12 @@
                             string="Partner"
                             context="{'group_by':'partner_id'}"
                         />
+                <filter
+                            name="grp_commercial_partner"
+                            string="Commercial Partner"
+                            context="{'group_by':'commercial_partner_id'}"
+                        />
+
                 <filter
                             name="grp_type"
                             string="Type"
@@ -113,12 +124,16 @@
     <field name="name">appointment.appointment tree</field>
     <field name="model">appointment.appointment</field>
     <field name="arch" type="xml">
-        <tree fonts="bold:message_unread==True" colors="red:date and (date&lt;current_date) and (state in ('confirm','approve','open'));blue:state == 'draft';grey:state == 'cancel';">
-            <field name="message_unread" invisible="1"/>
+        <tree
+                    fonts="bold:message_unread==True"
+                    colors="red:date and (date&lt;current_date) and (state in ('confirm','approve','open'));blue:state == 'draft';grey:state == 'cancel';"
+                >
+            <field name="message_unread" invisible="1" />
             <field name="display_name" string="# Appointment" />
             <field name="title" />
             <field name="company_id" groups="base.group_multi_company" />
             <field name="partner_id" />
+            <field name="commercial_partner_id" />
             <field name="type_ids" widget="many2many_tags" />
             <field name="type_id" />
             <field name="appointee_id" />
@@ -261,9 +276,7 @@
                                     name="partner_id"
                                     domain="['|',('parent_id','!=',False),'&amp;',('parent_id','=',False),('is_company','=',False)]"
                                 />
-                        <field
-                                    name="appointee_id"
-                                />
+                        <field name="appointee_id" />
                         <field
                                     name="allowed_type_ids"
                                     widget="many2many_tags"
@@ -274,20 +287,19 @@
                                     widget="many2many_tags"
                                     domain="[('id','in',allowed_type_ids[0][2])]"
                                 />
-                        <field
-                                    name="type_id"
-                                    domain="[('id','in',type_ids[0][2])]"
-                                />
+                        <field name="type_id" domain="[('id','in',type_ids[0][2])]" />
                     </group>
                     <group name="group_1_2">
                         <field name="date" />
                         <field name="time_slot_id" />
-                        <field
-                                    name="appointment_method"
-                                />
+                        <field name="appointment_method" />
                         <field
                                     name="link_method"
-                                    attrs="{'invisible': [('appointment_method', '!=', 'online')]}"
+                                    widget="url"
+                                    attrs="{'invisible':
+                                        [('appointment_method', '!=', 'online'
+                                        )],
+                                        }"
                                 />
                     </group>
                 </group>
