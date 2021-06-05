@@ -13,6 +13,7 @@
             <field name="title" />
             <field name="type_id" />
             <field name="partner_id" />
+            <field name="commercial_partner_id" />
             <field name="appointee_id" />
             <field name="date" />
             <field name="company_id" groups="base.group_multi_company" />
@@ -61,6 +62,11 @@
                             name="grp_partner"
                             string="Partner"
                             context="{'group_by':'partner_id'}"
+                        />
+                <filter
+                            name="grp_commercial_partner"
+                            string="Commercial Partner"
+                            context="{'group_by':'commercial_partner_id'}"
                         />
                 <filter
                             name="grp_type"
@@ -115,6 +121,7 @@
             <field name="title" />
             <field name="company_id" groups="base.group_multi_company" />
             <field name="partner_id" />
+            <field name="commercial_partner_id" />
             <field name="type_id" />
             <field name="appointee_id" />
             <field name="date" />
