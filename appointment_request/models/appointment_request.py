@@ -106,6 +106,12 @@ class AppointmentRequest(models.Model):
             ],
         },
     )
+    commercial_partner_id = fields.Many2one(
+        string="Commercial Partner",
+        comodel_name="res.partner",
+        related="partner_id.commercial_partner_id",
+        store=True,
+    )
     appointee_id = fields.Many2one(
         string="Appointee",
         comodel_name="res.users",
